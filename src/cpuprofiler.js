@@ -183,7 +183,7 @@ var emscriptenCpuProfiler = {
           cs += '"' + fn + '"';
         }
         
-        console.error('Trace: at t=' + performance.realNow().toFixed(1) + ', section "' + sect.name + '" called via ' + cs + ' took ' + timeInSection.toFixed(2) + ' msecs!');
+        err('Trace: at t=' + performance.realNow().toFixed(1) + ', section "' + sect.name + '" called via ' + cs + ' took ' + timeInSection.toFixed(2) + ' msecs!');
       }
       if (this.insideMainLoopRecursionCounter) sect.accumulatedTimeInsideMainLoop += timeInSection;
       else sect.accumulatedTimeOutsideMainLoop += timeInSection;

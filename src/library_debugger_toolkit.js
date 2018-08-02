@@ -184,7 +184,7 @@ var CyberDWARFHeapPrinter = function(cdFileLocation) {
           name_vec.unshift("volatile");
         }
         default:
-          console.error("Unimplemented " + type_descriptor);
+          err("Unimplemented " + type_descriptor);
       }
     }
 
@@ -212,7 +212,7 @@ var CyberDWARFHeapPrinter = function(cdFileLocation) {
           name_vec.unshift("array");
         } break;
         default:
-          console.error("Unimplemented for composite " + this.primary);
+          err("Unimplemented for composite " + this.primary);
       }
     }
 
@@ -429,7 +429,7 @@ var CyberDWARFHeapPrinter = function(cdFileLocation) {
 
     // Subtract 1 since we shouldn't have found it on the last frame
     if (stack_offset == stack_frames.length - 1) {
-      console.error("Couldn't find the function the decoder was called from");
+      err("Couldn't find the function the decoder was called from");
       return {};
     }
 

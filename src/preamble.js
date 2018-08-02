@@ -1093,7 +1093,7 @@ assert(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' 
 if (ENVIRONMENT_IS_WEB) {
   window.addEventListener('error', function(e) {
     if (e.message.indexOf('SimulateInfiniteLoop') != -1) return;
-    console.error('Page threw an exception ' + e);
+    err('Page threw an exception ' + e);
     Module['pageThrewException'] = true;
   });
 }
@@ -2395,7 +2395,7 @@ function integrateWasmJS() {
         }
       } catch(e) {
 #if ASSERTIONS
-        console.error('Module.reallocBuffer: Attempted to grow from ' + oldSize  + ' bytes to ' + size + ' bytes, but got error: ' + e);
+        err('Module.reallocBuffer: Attempted to grow from ' + oldSize  + ' bytes to ' + size + ' bytes, but got error: ' + e);
 #endif
         return null;
       }

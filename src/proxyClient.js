@@ -5,10 +5,10 @@ if (typeof Module === 'undefined') {
   console.warn('no Module object defined - cannot proxy canvas rendering and input events, etc.');
   Module = {
     print: function(x) {
-      console.log(x);
+      out(x);
     },
     printErr: function(x) {
-      console.log(x);
+      out(x);
     },
     canvas: {
       addEventListener: function() {},

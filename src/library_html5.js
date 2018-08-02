@@ -1824,7 +1824,7 @@ var LibraryJSEvents = {
     }
     if (!canvas) {
 #if GL_DEBUG
-      console.error('emscripten_webgl_create_context failed: Unknown target!');
+      err('emscripten_webgl_create_context failed: Unknown target!');
 #endif
       return 0;
     }
@@ -1833,7 +1833,7 @@ var LibraryJSEvents = {
       var supportsOffscreenCanvas = canvas.transferControlToOffscreen || (typeof OffscreenCanvas !== 'undefined' && canvas instanceof OffscreenCanvas);
       if (!supportsOffscreenCanvas) {
 #if GL_DEBUG
-        console.error('emscripten_webgl_create_context failed: OffscreenCanvas is not supported!');
+        err('emscripten_webgl_create_context failed: OffscreenCanvas is not supported!');
 #endif
         return 0;
       }
@@ -1845,7 +1845,7 @@ var LibraryJSEvents = {
     }
 #else
     if (contextAttributes['explicitSwapControl']) {
-      console.error('emscripten_webgl_create_context failed: explicitSwapControl is not supported, please rebuild with -s OFFSCREENCANVAS_SUPPORT=1 to enable targeting the experimental OffscreenCanvas specification!');
+      err('emscripten_webgl_create_context failed: explicitSwapControl is not supported, please rebuild with -s OFFSCREENCANVAS_SUPPORT=1 to enable targeting the experimental OffscreenCanvas specification!');
       return 0;
     }
 #endif
@@ -1877,19 +1877,19 @@ var LibraryJSEvents = {
   emscripten_webgl_commit_frame: function() {
     if (!GL.currentContext || !GL.currentContext.GLctx) {
 #if GL_DEBUG
-      console.error('emscripten_webgl_commit_frame() failed: no GL context set current via emscripten_webgl_make_context_current()!');
+      err('emscripten_webgl_commit_frame() failed: no GL context set current via emscripten_webgl_make_context_current()!');
 #endif
       return {{{ cDefine('EMSCRIPTEN_RESULT_INVALID_TARGET') }}};
     }
     if (!GL.currentContext.GLctx.commit) {
 #if GL_DEBUG
-      console.error('emscripten_webgl_commit_frame() failed: OffscreenCanvas is not supported by the current GL context!');
+      err('emscripten_webgl_commit_frame() failed: OffscreenCanvas is not supported by the current GL context!');
 #endif
       return {{{ cDefine('EMSCRIPTEN_RESULT_NOT_SUPPORTED') }}};
     }
     if (!GL.currentContext.attributes.explicitSwapControl) {
 #if GL_DEBUG
-      console.error('emscripten_webgl_commit_frame() cannot be called for canvases with implicit swap control mode!');
+      err('emscripten_webgl_commit_frame() cannot be called for canvases with implicit swap control mode!');
 #endif
       return {{{ cDefine('EMSCRIPTEN_RESULT_INVALID_TARGET') }}};
     }

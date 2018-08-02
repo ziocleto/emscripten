@@ -51,7 +51,7 @@ var LibraryWebVR = {
       /* Display handles start as 1 as 0 will be interpreted as false or null-handle
        * on errors */
       if (displayHandle < 1 || displayHandle > WebVR.displays.length) {
-        console.log("library_vr dereferenceDisplayHandle invalid display handle at: " + stackTrace());
+        out("library_vr dereferenceDisplayHandle invalid display handle at: " + stackTrace());
         return null;
       }
 

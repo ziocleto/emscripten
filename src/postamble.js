@@ -407,7 +407,7 @@ function abort(what) {
   }
 
 #if USE_PTHREADS
-  if (ENVIRONMENT_IS_PTHREAD) console.error('Pthread aborting at ' + new Error().stack);
+  if (ENVIRONMENT_IS_PTHREAD) err('Pthread aborting at ' + new Error().stack);
 #endif
   if (what !== undefined) {
     out(what);

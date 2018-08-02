@@ -278,14 +278,14 @@ exports.compressPackage = function(data, verify) {
   // compress the data in chunks
   assert(data instanceof ArrayBuffer);
   data = new Uint8Array(data);
-  console.log('compressing package of size ' + data.length);
+  out('compressing package of size ' + data.length);
   var compressedChunks = [];
   var successes = [];
   var offset = 0;
   var total = 0;
   while (offset < data.length) {
     var chunk = data.subarray(offset, offset + exports.CHUNK_SIZE);
-    //console.log('compress a chunk ' + [offset, total, data.length]);
+    //out('compress a chunk ' + [offset, total, data.length]);
     offset += exports.CHUNK_SIZE;
     var bound = exports.compressBound(chunk.length);
     var compressed = new Uint8Array(bound);
@@ -328,7 +328,7 @@ exports.compressPackage = function(data, verify) {
     compressedData.sizes[i] = compressedChunks[i].length
     offset += compressedChunks[i].length;
   }
-  console.log('compressed package into ' + [compressedData.data.length]);
+  out('compressed package into ' + [compressedData.data.length]);
   assert(offset === total);
   return compressedData;
 };

@@ -1304,7 +1304,7 @@ try {
       var int32x4 = SIMD.Float64x2.prevEqual(a, b);
       return SIMD.Bool64x2(SIMD.Int32x4.extractLane(int32x4, 1) != 0, SIMD.Int32x4.extractLane(int32x4, 3) != 0);
     }
-    console.error('Warning: Patching up SIMD.Float64x2.equal to return a Bool64x2 instead of Int32x4!');
+    err('Warning: Patching up SIMD.Float64x2.equal to return a Bool64x2 instead of Int32x4!');
   }
 } catch(e) {}
 try {
@@ -1314,7 +1314,7 @@ try {
       var int32x4 = SIMD.Float64x2.prevNotEqual(a, b);
       return SIMD.Bool64x2(SIMD.Int32x4.extractLane(int32x4, 1) != 0, SIMD.Int32x4.extractLane(int32x4, 3) != 0);
     } 
-    console.error('Warning: Patching up SIMD.Float64x2.notEqual to return a Bool64x2 instead of Int32x4!');
+    err('Warning: Patching up SIMD.Float64x2.notEqual to return a Bool64x2 instead of Int32x4!');
   }
 } catch(e) {}
 try {
@@ -1324,7 +1324,7 @@ try {
       var int32x4 = SIMD.Float64x2.prevGreaterThan(a, b);
       return SIMD.Bool64x2(SIMD.Int32x4.extractLane(int32x4, 1) != 0, SIMD.Int32x4.extractLane(int32x4, 3) != 0);
     } 
-    console.error('Warning: Patching up SIMD.Float64x2.greaterThan to return a Bool64x2 instead of Int32x4!');
+    err('Warning: Patching up SIMD.Float64x2.greaterThan to return a Bool64x2 instead of Int32x4!');
   }
 } catch(e) {}
 try {
@@ -1334,7 +1334,7 @@ try {
       var int32x4 = SIMD.Float64x2.prevGreaterThanOrEqual(a, b);
       return SIMD.Bool64x2(SIMD.Int32x4.extractLane(int32x4, 1) != 0, SIMD.Int32x4.extractLane(int32x4, 3) != 0);
     } 
-    console.error('Warning: Patching up SIMD.Float64x2.greaterThanOrEqual to return a Bool64x2 instead of Int32x4!');
+    err('Warning: Patching up SIMD.Float64x2.greaterThanOrEqual to return a Bool64x2 instead of Int32x4!');
   }
 } catch(e) {}
 try {
@@ -1344,7 +1344,7 @@ try {
       var int32x4 = SIMD.Float64x2.prevLessThan(a, b);
       return SIMD.Bool64x2(SIMD.Int32x4.extractLane(int32x4, 1) != 0, SIMD.Int32x4.extractLane(int32x4, 3) != 0);
     } 
-    console.error('Warning: Patching up SIMD.Float64x2.lessThan to return a Bool64x2 instead of Int32x4!');
+    err('Warning: Patching up SIMD.Float64x2.lessThan to return a Bool64x2 instead of Int32x4!');
   }
 } catch(e) {}
 try {
@@ -1354,7 +1354,7 @@ try {
       var int32x4 = SIMD.Float64x2.prevLessThanOrEqual(a, b);
       return SIMD.Bool64x2(SIMD.Int32x4.extractLane(int32x4, 1) != 0, SIMD.Int32x4.extractLane(int32x4, 3) != 0);
     } 
-    console.error('Warning: Patching up SIMD.Float64x2.lessThanOrEqual to return a Bool64x2 instead of Int32x4!');
+    err('Warning: Patching up SIMD.Float64x2.lessThanOrEqual to return a Bool64x2 instead of Int32x4!');
   }
 } catch(e) {}
 

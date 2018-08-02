@@ -25,7 +25,7 @@ function proxify(object, nick) {
   return new Proxy(object, {
     get: function(target, name) {
       var ret = target[name];
-      if (ret === undefined) console.log('PROXY ' + [nick, target, name, ret, typeof ret]);
+      if (ret === undefined) out('PROXY ' + [nick, target, name, ret, typeof ret]);
       return ret;
     }
   });

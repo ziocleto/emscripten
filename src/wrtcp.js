@@ -340,7 +340,7 @@ THE SOFTWARE.
       that.streams['remote'] = event.stream;
     };
     this.peerConnection.onstatechange = function(event) {
-      console.log(event.target.readyState);
+      out(event.target.readyState);
     };
 
     function createStream(useFake) {
@@ -359,7 +359,7 @@ THE SOFTWARE.
           cb();
         },
         function(error) {
-          console.error('!', error);
+          err('!', error);
           if(!useFake)
             createStream(true);
           else
@@ -406,7 +406,7 @@ THE SOFTWARE.
           }
         };
         channel.onerror = function(error) {
-          console.error(error);
+          err(error);
           fail(that, 'onerror', error);
         };
       });
@@ -459,7 +459,7 @@ THE SOFTWARE.
           }
         };
         channel.onerror = function(error) {
-          console.error(error);
+          err(error);
           fail(that, 'onerror', error);
         };
       };
@@ -664,7 +664,7 @@ THE SOFTWARE.
     this.connectionTimer = window.setTimeout(handleConnectionTimerExpired, options['connectionTimeout']);
   };
   Connection.prototype.close = function close() {
-    console.log('close connection');
+    out('close connection');
     if(this.connected) {
       this.channels['@control'].send('quit');
     }

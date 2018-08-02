@@ -223,7 +223,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Executes the given function when the page is loaded.
    *
-   *     io.util.load(function () { console.log('page loaded'); });
+   *     io.util.load(function () { out('page loaded'); });
    *
    * @param {Function} fn
    * @api public
@@ -2708,11 +2708,11 @@ var swfobject=function(){var D="undefined",r="object",S="Shockwave Flash",W="Sho
   }
 
   if (!swfobject.hasFlashPlayerVersion("10.0.0")) {
-    console.error("Flash Player >= 10.0.0 is required.");
+    err("Flash Player >= 10.0.0 is required.");
     return;
   }
   if (location.protocol == "file:") {
-    console.error(
+    err(
       "WARNING: web-socket-js doesn't work in file:///... URL " +
       "unless you set Flash Security Settings properly. " +
       "Open the page via Web server i.e. http://...");
@@ -2917,7 +2917,7 @@ var swfobject=function(){var D="undefined",r="object",S="Shockwave Flash",W="Sho
       window.WEB_SOCKET_SWF_LOCATION = WebSocket.__swfLocation;
     }
     if (!window.WEB_SOCKET_SWF_LOCATION) {
-      console.error("[WebSocket] set WEB_SOCKET_SWF_LOCATION to location of WebSocketMain.swf");
+      err("[WebSocket] set WEB_SOCKET_SWF_LOCATION to location of WebSocketMain.swf");
       return;
     }
     var container = document.createElement("div");
@@ -2953,7 +2953,7 @@ var swfobject=function(){var D="undefined",r="object",S="Shockwave Flash",W="Sho
       null,
       function(e) {
         if (!e.success) {
-          console.error("[WebSocket] swfobject.embedSWF failed");
+          err("[WebSocket] swfobject.embedSWF failed");
         }
       });
   };
@@ -2990,7 +2990,7 @@ var swfobject=function(){var D="undefined",r="object",S="Shockwave Flash",W="Sho
           WebSocket.__instances[events[i].webSocketId].__handleEvent(events[i]);
         }
       } catch (e) {
-        console.error(e);
+        err(e);
       }
     }, 0);
     return true;
@@ -2998,12 +2998,12 @@ var swfobject=function(){var D="undefined",r="object",S="Shockwave Flash",W="Sho
 
   // Called by Flash.
   WebSocket.__log = function(message) {
-    console.log(decodeURIComponent(message));
+    out(decodeURIComponent(message));
   };
 
   // Called by Flash.
   WebSocket.__error = function(message) {
-    console.error(decodeURIComponent(message));
+    err(decodeURIComponent(message));
   };
 
   WebSocket.__addTask = function(task) {

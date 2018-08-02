@@ -284,7 +284,7 @@ var LibraryPThread = {
                 default:
                   if (d.proxiedCall) {
                     err("worker sent an unknown proxied call idx " + d.proxiedCall);
-                    console.error(e.data);
+                    err(e.data);
                   }
                   break;
               }
@@ -306,7 +306,7 @@ var LibraryPThread = {
               if (thread) {
                 thread.worker.postMessage(e.data, d.transferList);
               } else {
-                console.error('Internal error! Worker sent a message "' + d.cmd + '" to target pthread ' + d.targetThread + ', but that thread no longer exists!');
+                err('Internal error! Worker sent a message "' + d.cmd + '" to target pthread ' + d.targetThread + ', but that thread no longer exists!');
               }
               return;
             }

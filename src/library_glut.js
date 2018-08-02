@@ -293,7 +293,7 @@ var LibraryGLUT = {
                                                   // Just call it once here.
       /* Can't call _glutReshapeWindow as that requests cancelling fullscreen. */
       if (GLUT.reshapeFunc) {
-        // console.log("GLUT.reshapeFunc (from FS): " + width + ", " + height);
+        // out("GLUT.reshapeFunc (from FS): " + width + ", " + height);
         Module['dynCall_vii'](GLUT.reshapeFunc, width, height);
       }
       _glutPostRedisplay();

@@ -39,18 +39,18 @@ this.addEventListener('error', function(e) {
   if (e.message.indexOf('SimulateInfiniteLoop') != -1) return e.preventDefault();
 
   var errorSource = ' in ' + e.filename + ':' + e.lineno + ':' + e.colno;
-  console.error('Pthread ' + selfThreadId + ' uncaught exception' + (e.filename || e.lineno || e.colno ? errorSource : '') + ': ' + e.message + '. Error object:');
-  console.error(e.error);
+  err('Pthread ' + selfThreadId + ' uncaught exception' + (e.filename || e.lineno || e.colno ? errorSource : '') + ': ' + e.message + '. Error object:');
+  err(e.error);
 });
 
 function threadPrint() {
   var text = Array.prototype.slice.call(arguments).join(' ');
-  console.log(text);
+  out(text);
 }
 function threadPrintErr() {
   var text = Array.prototype.slice.call(arguments).join(' ');
-  console.error(text);
-  console.error(new Error().stack);
+  err(text);
+  err(new Error().stack);
 }
 function threadAlert() {
   var text = Array.prototype.slice.call(arguments).join(' ');
@@ -177,11 +177,11 @@ this.onmessage = function(e) {
       }
     } else {
       err('pthread-main.js received unknown command ' + e.data.cmd);
-      console.error(e.data);
+      err(e.data);
     }
   } catch(e) {
-    console.error('pthread-main.js onmessage() captured an uncaught exception: ' + e);
-    console.error(e.stack);
+    err('pthread-main.js onmessage() captured an uncaught exception: ' + e);
+    err(e.stack);
     throw e;
   }
 }

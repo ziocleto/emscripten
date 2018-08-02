@@ -43,7 +43,7 @@ if (ENVIRONMENT_IS_NODE) {
 
 } else if (ENVIRONMENT_IS_WEB) {
   this['print'] = printErr = function(x) {
-    console.log(x);
+    out(x);
   };
 
   this['read'] = function(url) {

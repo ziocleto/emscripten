@@ -48,7 +48,7 @@ var inf = Infinity;
 function _emscripten_asm_const_v() {}
 
 function assert(condition) {
-  if (!condition) console.error('assert failure!');
+  if (!condition) err('assert failure!');
 }
 
 /// TODO: DO SOMETHING ABOUT ME.
@@ -119,7 +119,7 @@ function processWorkQueue() {
     try {
       emscripten_start_fetch(fetch, successcb, errorcb, progresscb);
     } catch(e) {
-      console.error(e);
+      err(e);
     }
     /*
     if (interval != undefined) {

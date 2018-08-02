@@ -77,7 +77,7 @@ if (ENVIRONMENT_IS_NODE) {
 
 } else if (ENVIRONMENT_IS_WEB) {
   printErr = function(x) {
-    console.log(x);
+    out(x);
   };
 
   if (!this['print']) this['print'] = printErr;
@@ -247,7 +247,7 @@ try {
     process['stdout']['once']('drain', function () {
       process['exit'](1);
     });
-    console.log(' '); // Make sure to print something to force the drain event to occur, in case the stdout buffer was empty.
+    out(' '); // Make sure to print something to force the drain event to occur, in case the stdout buffer was empty.
     // Work around another node bug where sometimes 'drain' is never fired - make another effort
     // to emit the exit status, after a significant delay (if node hasn't fired drain by then, give up)
     setTimeout(function() {
