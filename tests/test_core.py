@@ -19,7 +19,7 @@ from textwrap import dedent
 if __name__ == '__main__':
   raise Exception('do not run this file directly; do something like: tests/runner.py')
 
-from tools.shared import Building, STDOUT, PIPE, run_js, run_process, Settings, try_delete
+from tools.shared import Building, STDOUT, PIPE, run_js, run_process, try_delete
 from tools.shared import NODE_JS, V8_ENGINE, JS_ENGINES, SPIDERMONKEY_ENGINE, PYTHON, EMCC, EMAR, CLANG, WINDOWS, AUTODEBUGGER
 from tools import jsrun, shared
 from runner import RunnerCore, path_from_root, core_test_modes, get_bullet_library
@@ -7929,6 +7929,10 @@ def make_run(name, emcc_args, env=None):
   if env is None:
     env = {}
 
+  # Filter out the opt level
+  opt_level = [a for a in emcc_args if a.startswith('-O')]
+  emcc_args = [a for a in emcc_args if not a.startswith('-O')]
+
   TT = type(name, (TestCoreBase,), dict(run_name=name, env=env))  # noqa
 
   def tearDown(self):
@@ -7953,10 +7957,8 @@ def make_run(name, emcc_args, env=None):
     os.chdir(self.get_dir()) # Ensure the directory exists and go there
 
     self.emcc_args = emcc_args[:]
-    Settings.load(self.emcc_args)
     Building.LLVM_OPTS = 0
-
-    Building.COMPILER_TEST_OPTS += [
+    Building.COMPILER_TEST_OPTS = [
         '-Werror', '-Wno-dynamic-class-memaccess', '-Wno-format',
         '-Wno-format-extra-args', '-Wno-format-security',
         '-Wno-pointer-bool-conversion', '-Wno-unused-volatile-lvalue',
@@ -7964,9 +7966,9 @@ def make_run(name, emcc_args, env=None):
         '-Wno-invalid-pp-token', '-Wno-shift-negative-value'
     ]
 
-    for arg in self.emcc_args:
-      if arg.startswith('-O'):
-        Building.COMPILER_TEST_OPTS.append(arg) # so bitcode is optimized too, this is for cpp to ll
+    # so bitcode is optimized too, this is for cpp to ll
+    if opt_level:
+      Building.COMPILER_TEST_OPTS.append(opt_level[-1])
 
   TT.setUp = setUp
 
