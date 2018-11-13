@@ -2399,6 +2399,7 @@ for line in open('a').readlines():
   if (!strcmp(name, "glFramebufferTexture1D")) return emscripten_glFramebufferTexture1D;
   if (!strcmp(name, "glFramebufferTexture2D")) return emscripten_glFramebufferTexture2D;
   if (!strcmp(name, "glFramebufferTexture3D")) return emscripten_glFramebufferTexture3D;
+  if (!strcmp(name, "glTexImage2D")) return emscripten_glTexImage2D;
   // If LEGACY_GL_EMULATION is on, allow access to those functions too
   if (EM_ASM_INT({ return GL.legacyGLEmulation })) {
 printf("  look at emu\n");
@@ -2534,7 +2535,6 @@ printf("  look at emu\n");
     if (!strcmp(name, "glGetTexEnvfv")) return emscripten_glGetTexEnvfv;
     if (!strcmp(name, "glGetTexEnviv")) return emscripten_glGetTexEnviv;
     if (!strcmp(name, "glTexImage1D")) return emscripten_glTexImage1D;
-    if (!strcmp(name, "glTexImage2D")) return emscripten_glTexImage2D;
     if (!strcmp(name, "glTexCoord1d")) return emscripten_glTexCoord1d;
     if (!strcmp(name, "glTexCoord1f")) return emscripten_glTexCoord1f;
     if (!strcmp(name, "glTexCoord1i")) return emscripten_glTexCoord1i;
