@@ -1235,6 +1235,11 @@
             //text = text.replace(/>/g, "&gt;");
             //text = text.replace('\n', '<br>', 'g');
             console.log(text);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', encodeURI('http://localhost:8888?stdout=' + text));
+            xhr.send();
+
             if (element) {
               element.value += text + "\n";
               element.scrollTop = element.scrollHeight; // focus on bottom
@@ -1244,6 +1249,11 @@
         printErr: function(text) {
           if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
           console.error(text);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', encodeURI('http://localhost:8888?stdout=' + text));
+            xhr.send();
+
         },
         canvas: (function() {
           var canvas = document.getElementById('canvas');
@@ -1287,6 +1297,9 @@
       window.onerror = function(event) {
         // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
         Module.setStatus('Exception thrown, see JavaScript console');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', encodeURI('http://localhost:8888?stdout=' + event));
+            xhr.send();
         spinnerElement.style.display = 'none';
         Module.setStatus = function(text) {
           if (text) Module.printErr('[post-exception status] ' + text);
