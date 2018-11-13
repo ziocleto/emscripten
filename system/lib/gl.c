@@ -2385,6 +2385,19 @@ for line in open('a').readlines():
   if (!strcmp(name, "glDepthRangef")) return emscripten_glDepthRangef;
   if (!strcmp(name, "glClearDepthf")) return emscripten_glClearDepthf;
   if (!strcmp(name, "glVertexAttribDivisor")) return emscripten_glVertexAttribDivisor;
+  if (!strcmp(name, "glGenFramebuffers")) return emscripten_glGenFramebuffers;
+  if (!strcmp(name, "glGenRenderbuffers")) return emscripten_glGenRenderbuffers;
+  if (!strcmp(name, "glBindFramebuffer")) return emscripten_glBindFramebuffer;
+  if (!strcmp(name, "glBindRenderbuffer")) return emscripten_glBindRenderbuffer;
+  if (!strcmp(name, "glGetRenderbufferParameteriv")) return emscripten_glGetRenderbufferParameteriv;
+  if (!strcmp(name, "glFramebufferRenderbuffer")) return emscripten_glFramebufferRenderbuffer;
+  if (!strcmp(name, "glRenderbufferStorage")) return emscripten_glRenderbufferStorage;
+  if (!strcmp(name, "glCheckFramebufferStatus")) return emscripten_glCheckFramebufferStatus;
+  if (!strcmp(name, "glDeleteFramebuffers")) return emscripten_glDeleteFramebuffers;
+  if (!strcmp(name, "glDeleteRenderbuffers")) return emscripten_glDeleteRenderbuffers;
+  if (!strcmp(name, "glFramebufferTexture1D")) return emscripten_glFramebufferTexture1D;
+  if (!strcmp(name, "glFramebufferTexture2D")) return emscripten_glFramebufferTexture2D;
+  if (!strcmp(name, "glFramebufferTexture3D")) return emscripten_glFramebufferTexture3D;
   // If LEGACY_GL_EMULATION is on, allow access to those functions too
   if (EM_ASM_INT({ return GL.legacyGLEmulation })) {
     if (!strcmp(name, "glGetShaderPrecisionFormat")) return emscripten_glGetShaderPrecisionFormat;
@@ -2555,19 +2568,6 @@ for line in open('a').readlines():
     if (!strcmp(name, "glGetTexLevelParameterfv")) return emscripten_glGetTexLevelParameterfv;
     if (!strcmp(name, "glGetTexLevelParameteriv")) return emscripten_glGetTexLevelParameteriv;
     if (!strcmp(name, "glShadeModel")) return emscripten_glShadeModel;
-    if (!strcmp(name, "glGenFramebuffers")) return emscripten_glGenFramebuffers;
-    if (!strcmp(name, "glGenRenderbuffers")) return emscripten_glGenRenderbuffers;
-    if (!strcmp(name, "glBindFramebuffer")) return emscripten_glBindFramebuffer;
-    if (!strcmp(name, "glBindRenderbuffer")) return emscripten_glBindRenderbuffer;
-    if (!strcmp(name, "glGetRenderbufferParameteriv")) return emscripten_glGetRenderbufferParameteriv;
-    if (!strcmp(name, "glFramebufferRenderbuffer")) return emscripten_glFramebufferRenderbuffer;
-    if (!strcmp(name, "glRenderbufferStorage")) return emscripten_glRenderbufferStorage;
-    if (!strcmp(name, "glCheckFramebufferStatus")) return emscripten_glCheckFramebufferStatus;
-    if (!strcmp(name, "glDeleteFramebuffers")) return emscripten_glDeleteFramebuffers;
-    if (!strcmp(name, "glDeleteRenderbuffers")) return emscripten_glDeleteRenderbuffers;
-    if (!strcmp(name, "glFramebufferTexture1D")) return emscripten_glFramebufferTexture1D;
-    if (!strcmp(name, "glFramebufferTexture2D")) return emscripten_glFramebufferTexture2D;
-    if (!strcmp(name, "glFramebufferTexture3D")) return emscripten_glFramebufferTexture3D;
   }
   return 0;
 }
