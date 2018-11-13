@@ -173,7 +173,7 @@ class EmccOptions(object):
     self.shrink_level = 0
     self.requested_debug = ''
     self.profiling = False
-    self.profiling_funcs = False
+    self.profiling_funcs = True
     self.tracing = False
     self.emit_symbol_map = False
     self.js_opts = None
