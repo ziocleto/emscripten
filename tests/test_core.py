@@ -7929,10 +7929,6 @@ def make_run(name, emcc_args, env=None):
   if env is None:
     env = {}
 
-  # Filter out the opt level
-  opt_level = [a for a in emcc_args if a.startswith('-O')]
-  emcc_args = [a for a in emcc_args if not a.startswith('-O')]
-
   TT = type(name, (TestCoreBase,), dict(run_name=name, env=env))  # noqa
 
   def tearDown(self):
@@ -7965,10 +7961,6 @@ def make_run(name, emcc_args, env=None):
         '-Wno-c++11-compat-deprecated-writable-strings',
         '-Wno-invalid-pp-token', '-Wno-shift-negative-value'
     ]
-
-    # so bitcode is optimized too, this is for cpp to ll
-    if opt_level:
-      Building.COMPILER_TEST_OPTS.append(opt_level[-1])
 
   TT.setUp = setUp
 
