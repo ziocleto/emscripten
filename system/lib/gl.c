@@ -1564,7 +1564,6 @@ GLAPI void APIENTRY emscripten_glVertexAttribDivisor (GLuint index, GLuint divis
 
 
 void* emscripten_GetProcAddress(const char *name_) {
-printf("emscripten_GetProcAddress: %s\n", name_);
   char *name = malloc(strlen(name_)+1);
   strcpy(name, name_);
   // remove EXT|ARB|OES|ANGLE suffixes
@@ -2402,7 +2401,6 @@ for line in open('a').readlines():
   if (!strcmp(name, "glTexImage2D")) return emscripten_glTexImage2D;
   // If LEGACY_GL_EMULATION is on, allow access to those functions too
   if (EM_ASM_INT({ return GL.legacyGLEmulation })) {
-printf("  look at emu\n");
     if (!strcmp(name, "glGetShaderPrecisionFormat")) return emscripten_glGetShaderPrecisionFormat;
     if (!strcmp(name, "glDeleteObject")) return emscripten_glDeleteObjectARB;
     if (!strcmp(name, "glGetObjectParameteriv")) return emscripten_glGetObjectParameterivARB;
@@ -2571,7 +2569,6 @@ printf("  look at emu\n");
     if (!strcmp(name, "glGetTexLevelParameteriv")) return emscripten_glGetTexLevelParameteriv;
     if (!strcmp(name, "glShadeModel")) return emscripten_glShadeModel;
   }
-printf("  return nullptr\n");
   return 0;
 }
 
