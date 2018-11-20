@@ -529,11 +529,13 @@ def check_sanity(force=False):
     """Run npm install to update node_modules if package.json changes.
     For normally node projects developers are expected to run this when they
     fetch from git, but emscripten it not a normal node project so for now
-    at least we hide this extra step and do it for them."""
+    at least we hide this extra step and do it for them.
+    """
 
-    # emsdk users have node_modules pre-included so don't ever need to run npm
-    if not os.path.exists(os.path.join(__rootpath__, '.git')):
-      return
+    # TODO(sbc): Return early here for emsdk users who should have node_modules
+    # pre-included at the correct version.  We can't do that right now since
+    # the top-level node_modules is explictly excluded:
+    # https://github.com/juj/emslave/blob/cef8e88eff61dd2114d1d6c86b161e5662e13394/bin/deploy_emscripten_llvm.py#L465
 
     modules = os.path.join(__rootpath__, 'node_modules')
     modules_stamp = os.path.join(__rootpath__, '.node_modules.stamp')
