@@ -524,6 +524,33 @@ def check_sanity(force=False):
   EM_CONFIG (so, we re-check sanity when the settings are changed).  We also
   re-check sanity and clear the cache when the version changes"""
   ToolchainProfiler.enter_block('sanity')
+
+  def run_npm_install_if_needed():
+    """Run npm install to update node_modules if package.json changes.
+    For normally node projects developers are expected to run this when they
+    fetch from git, but emscripten it not a normal node project so for now
+    at least we hide this extra step and do it for them."""
+
+    # emsdk users have node_modules pre-included so don't ever need to run npm
+    if not os.path.exists(os.path.join(__rootpath__, '.git')):
+      return
+
+    modules = os.path.join(__rootpath__, 'node_modules')
+    modules_stamp = os.path.join(__rootpath__, '.node_modules.stamp')
+    pkg_json = os.path.join(__rootpath__, 'package.json')
+    if os.path.exists(modules) and os.path.exists(modules_stamp):
+      if os.path.getmtime(modules_stamp) > os.path.getmtime(pkg_json):
+        return
+
+    npm = os.path.join(os.path.dirname(NODE_JS[0]), 'npm')
+    if not os.path.exists(npm):
+      exit_with_error('npm not found at: %s', npm)
+    logger.info('running `npm install` to update node_modules')
+    jsrun.run_js_tool(npm, NODE_JS, jsargs=['install'], cwd=__rootpath__)
+    open(modules_stamp, 'w').close()
+
+  run_npm_install_if_needed()
+
   try:
     if os.environ.get('EMCC_SKIP_SANITY_CHECK') == '1':
       return
@@ -541,7 +568,7 @@ def check_sanity(force=False):
           if sanity_mtime <= settings_mtime:
             reason = 'settings file has changed'
           else:
-            sanity_data = open(sanity_file).read().rstrip('\n\r') # workaround weird bug with read() that appends new line char in some old python version
+            sanity_data = open(sanity_file).read().rstrip()
             if sanity_data != generate_sanity():
               reason = 'system change: %s vs %s' % (generate_sanity(), sanity_data)
             else:
@@ -591,9 +618,8 @@ def check_sanity(force=False):
 
     if not force:
       # Only create/update this file if the sanity check succeeded, i.e., we got here
-      f = open(sanity_file, 'w')
-      f.write(generate_sanity())
-      f.close()
+      with open(sanity_file, 'w') as f:
+        f.write(generate_sanity() + '\n')
 
   except Exception as e:
     # Any error here is not worth failing on
