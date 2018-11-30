@@ -960,6 +960,74 @@ var LibraryBrowser = {
     return handle;
   },
 
+  emscripten_async_http_request__proxy: 'sync',
+  emscripten_async_http_request__sig: 'iiiiiiiIiiii',
+  emscripten_async_http_request: function(url, request, param, length, contenttype, arg, free, onload, onerror, onprogress, withcredentials) {
+    var _url = Pointer_stringify(url);
+    var _request = Pointer_stringify(request);
+    var _param = Pointer_stringify(param, length);
+    var _contenttype = Pointer_stringify(contenttype);
+
+    var http = new XMLHttpRequest();
+    http.open(_request, _url, true);
+    http.withCredentials = withcredentials;
+    http.responseType = 'arraybuffer';
+
+    var handle = Browser.getNextWgetRequestHandle();
+
+    // LOAD
+    http.onload = function http_onload(e) {
+      if (http.status == 200 || _url.substr(0,4).toLowerCase() != "http") {
+        var byteArray = new Uint8Array(http.response);
+        var buffer = _malloc(byteArray.length);
+        HEAPU8.set(byteArray, buffer);
+        if (onload) Module['dynCall_viiii'](onload, handle, arg, buffer, byteArray.length);
+        if (free) _free(buffer);
+      } else {
+        if (onerror) Module['dynCall_viiii'](onerror, handle, arg, http.status, http.statusText);
+      }
+      delete Browser.wgetRequests[handle];
+    };
+
+    // ERROR
+    http.onerror = function http_onerror(e) {
+      if (onerror) {
+        Module['dynCall_viiii'](onerror, handle, arg, http.status, http.statusText);
+      }
+      delete Browser.wgetRequests[handle];
+    };
+
+    // PROGRESS
+    http.onprogress = function http_onprogress(e) {
+      if (onprogress) Module['dynCall_viiii'](onprogress, handle, arg, e.loaded, e.lengthComputable || e.lengthComputable === undefined ? e.total : 0);
+    };
+
+    // ABORT
+    http.onabort = function http_onabort(e) {
+      delete Browser.wgetRequests[handle];
+    };
+
+    if (_request == "POST") {
+      //Send the proper header information along with the request
+      http.setRequestHeader("Content-type", _contenttype);
+
+      var ab = new ArrayBuffer(length);
+      var longInt8View = new Uint8Array(ab);
+
+      // generate some data
+      for (var i=0; i< longInt8View.length; i++) {
+        longInt8View[i] = _param[i];
+      }
+      http.send(ab);
+    } else if (_request == "GET") {
+      http.send(null);
+    }
+
+    Browser.wgetRequests[handle] = http;
+
+    return handle;
+  },
+
   emscripten_async_wget2_abort__proxy: 'sync',
   emscripten_async_wget2_abort__sig: 'vi',
   emscripten_async_wget2_abort: function(handle) {

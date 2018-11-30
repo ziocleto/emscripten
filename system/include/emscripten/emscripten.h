@@ -181,6 +181,8 @@ void emscripten_wget(const char* url, const char* file);
 
 void emscripten_wget_data(const char* url, void** pbuffer, int* pnum, int *perror);
 
+int emscripten_async_http_request(const char* url, const char* requesttype, const char* param, int length, const char* contenttype, void *arg, int free, em_async_wget2_data_onload_func onload, em_async_wget2_data_onerror_func onerror, em_async_wget2_data_onprogress_func onprogress, int withcredentials);
+
 // IDB
 
 void emscripten_idb_async_load(const char *db_name, const char *file_id, void* arg, em_async_wget_onload_func onload, em_arg_callback_func onerror);
