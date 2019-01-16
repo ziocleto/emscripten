@@ -961,16 +961,24 @@ var LibraryBrowser = {
   },
 
   emscripten_async_http_request__proxy: 'sync',
-  emscripten_async_http_request__sig: 'iiiiiiiIiiii',
-  emscripten_async_http_request: function(url, request, param, length, contenttype, arg, free, onload, onerror, onprogress, withcredentials) {
+  emscripten_async_http_request__sig: 'iiiiiiiiIiiii',
+  emscripten_async_http_request: function(url, request, headers, param, length, contenttype, arg, free, onload, onerror, onprogress, withcredentials) {
     var _url = Pointer_stringify(url);
     var _request = Pointer_stringify(request);
+    var _headers = Pointer_stringify(headers);
     var _param = Pointer_stringify(param, length);
     var _contenttype = Pointer_stringify(contenttype);
 
     var http = new XMLHttpRequest();
     http.open(_request, _url, true);
     http.withCredentials = withcredentials;
+    var headerPairs = _headers.split(" ");
+    if ( headerPairs.length > 0 ) {
+      for ( var i = 0; i < headerPairs.length; i+=2 ) {
+        var value = i+1 >= headerPairs.length ? "" : headerPairs[i+1];
+        http.setRequestHeader(headerPairs[i], value);
+      }      
+    }
     http.responseType = 'arraybuffer';
 
     var handle = Browser.getNextWgetRequestHandle();
@@ -981,7 +989,7 @@ var LibraryBrowser = {
         var byteArray = new Uint8Array(http.response);
         var buffer = _malloc(byteArray.length);
         HEAPU8.set(byteArray, buffer);
-        if (onload) Module['dynCall_viiii'](onload, handle, arg, buffer, byteArray.length);
+        if (onload) Module['dynCall_viiiii'](onload, handle, arg, http.status, buffer, byteArray.length);
         if (free) _free(buffer);
       } else {
         if (onerror) Module['dynCall_viiii'](onerror, handle, arg, http.status, http.statusText);
@@ -1011,14 +1019,18 @@ var LibraryBrowser = {
       //Send the proper header information along with the request
       http.setRequestHeader("Content-type", _contenttype);
 
-      var ab = new ArrayBuffer(length);
-      var longInt8View = new Uint8Array(ab);
+      if ( _contenttype == "application/octet-stream" ) {
+        var ab = new ArrayBuffer(length);
+        var longInt8View = new Uint8Array(ab);
 
-      // generate some data
-      for (var i=0; i< longInt8View.length; i++) {
-        longInt8View[i] = _param[i];
+        // generate some data
+        for (var i=0; i< longInt8View.length; i++) {
+          longInt8View[i] = _param[i];
+        }
+        http.send(ab);        
+      } else {
+        http.send(_param);
       }
-      http.send(ab);
     } else if (_request == "GET") {
       http.send(null);
     }
