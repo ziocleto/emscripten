@@ -153,6 +153,10 @@ static inline double emscripten_get_now(void) {
 
 float emscripten_random(void);
 
+// WebSocket
+void emscripten_ws_init(const char* url, em_str_callback_func onmessage);
+void emscripten_ws_send(const char* message);
+
 // wget
 
 void emscripten_async_wget(const char* url, const char* file, em_str_callback_func onload, em_str_callback_func onerror);

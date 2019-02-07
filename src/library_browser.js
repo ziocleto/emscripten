@@ -84,6 +84,7 @@ var LibraryBrowser = {
     pointerLock: false,
     moduleContextCreatedCallbacks: [],
     workers: [],
+    socket: null,
 
     init: function() {
       if (!Module["preloadPlugins"]) Module["preloadPlugins"] = []; // needs to exist even in workers
@@ -1596,7 +1597,45 @@ var LibraryBrowser = {
     }
 
     return 0;
+  },
+
+  emscripten_ws_send__deps: ['$PATH'],
+  emscripten_ws_send__proxy: 'sync',
+  emscripten_ws_send__sig: 'vi',
+  emscripten_ws_send: function(message) {
+    var msg = Pointer_stringify(message);
+      console.log("[WEB-SOCKET] message: ", msg);
+      Browser.socket.send(msg);
+  },
+
+  emscripten_ws_init__deps: ['$PATH'],
+  emscripten_ws_init__proxy: 'sync',
+  emscripten_ws_init__sig: 'vii',
+  emscripten_ws_init: function(url, onmessage) {
+      Browser.socket = new WebSocket(Pointer_stringify(url));
+      console.log("[WEB-SOCKET] Init: ", Browser.socket);
+
+      Browser.socket.onclose = function (event) {
+        Browser.socket.close();
+      };
+
+      Browser.socket.onerror = function (event) {
+        console.log("[WEB-SOCKET] Error " + event.data); 
+      };
+      Browser.socket.onopen = function (event) {
+        console.log("[WEB-SOCKET] Opened successfully"); 
+      };
+      Browser.socket.onmessage = function (event) {
+        console.log("[WEB-SOCKET] Message received: " + event.data); 
+          if (onmessage) {
+            var stack = stackSave();
+            Module['dynCall_vi'](onmessage, allocate(intArrayFromString(event.data), 'i8', ALLOC_STACK));
+            stackRestore(stack);
+          }
+
+      };
   }
+
 };
 
 autoAddDeps(LibraryBrowser, '$Browser');
