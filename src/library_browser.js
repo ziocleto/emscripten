@@ -1023,10 +1023,8 @@ var LibraryBrowser = {
       if ( _contenttype == "application/octet-stream" ) {
         var ab = new ArrayBuffer(length);
         var longInt8View = new Uint8Array(ab);
-
-        // generate some data
         for (var i=0; i< longInt8View.length; i++) {
-          longInt8View[i] = _param[i];
+          longInt8View[i] = getValue( param + i, 'i8' );
         }
         http.send(ab);        
       } else {
