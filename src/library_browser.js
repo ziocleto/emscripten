@@ -990,10 +990,21 @@ var LibraryBrowser = {
         var byteArray = new Uint8Array(http.response);
         var buffer = _malloc(byteArray.length);
         HEAPU8.set(byteArray, buffer);
-        if (onload) Module['dynCall_viiiii'](onload, handle, arg, http.status, buffer, byteArray.length);
+        var etag = http.getResponseHeader("ETag");
+        if (etag == null ) {
+          etag = http.responseURL + byteArray.length.toString();
+        }
+        var lengthAsUTF8 = lengthBytesUTF8(etag);
+        var cname = _malloc(lengthAsUTF8+1);
+        stringToUTF8(etag, cname, lengthAsUTF8+1);
+
+        if (onload) Module['dynCall_viiiiii'](onload, handle, arg, http.status, cname, buffer, byteArray.length);
         if (free) _free(buffer);
       } else {
-        if (onerror) Module['dynCall_viiii'](onerror, handle, arg, http.status, http.statusText);
+        var lengthAsUTF8 = lengthBytesUTF8(http.statusText);
+        var httpStatusText = _malloc(lengthAsUTF8+1);
+        stringToUTF8(http.statusText, httpStatusText, lengthAsUTF8+1);
+        if (onerror) Module['dynCall_viiii'](onerror, handle, arg, http.status, httpStatusText);
       }
       delete Browser.wgetRequests[handle];
     };
