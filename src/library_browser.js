@@ -977,6 +977,7 @@ var LibraryBrowser = {
     if ( headerPairs.length > 0 ) {
       for ( var i = 0; i < headerPairs.length; i+=2 ) {
         var value = i+1 >= headerPairs.length ? "" : headerPairs[i+1];
+        value = value.replace( "Bearer+", "Bearer ");
         http.setRequestHeader(headerPairs[i], value);
       }      
     }
