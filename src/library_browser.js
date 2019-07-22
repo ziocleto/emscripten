@@ -85,6 +85,7 @@ var LibraryBrowser = {
     moduleContextCreatedCallbacks: [],
     workers: [],
     socket: null,
+    delayedWebSocketMessage: "",
 
     init: function() {
       if (!Module["preloadPlugins"]) Module["preloadPlugins"] = []; // needs to exist even in workers
@@ -1609,13 +1610,19 @@ var LibraryBrowser = {
     return 0;
   },
 
+
   emscripten_ws_send__deps: ['$PATH'],
   emscripten_ws_send__proxy: 'sync',
   emscripten_ws_send__sig: 'vi',
   emscripten_ws_send: function(message) {
     var msg = Pointer_stringify(message);
+    if ( Browser.socket.readyState === WebSocket.OPEN ) {
       console.log("[WEB-SOCKET] message: ", msg);
-      Browser.socket.send(msg);
+      Browser.socket.send(msg);      
+    } else {
+      console.log("[WEB-SOCKET] message not ready yet: ", msg);      
+      Browser.delayedWebSocketMessage = msg;
+    }
   },
 
   emscripten_ws_init__deps: ['$PATH'],
@@ -1634,6 +1641,10 @@ var LibraryBrowser = {
       };
       Browser.socket.onopen = function (event) {
         console.log("[WEB-SOCKET] Opened successfully"); 
+        if ( Browser.delayedWebSocketMessage.length > 0 ) {
+          Browser.socket.send(Browser.delayedWebSocketMessage);  
+          Browser.delayedWebSocketMessage = "";
+        }
       };
       Browser.socket.onmessage = function (event) {
         console.log("[WEB-SOCKET] Message received: " + event.data); 
