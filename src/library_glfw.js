@@ -401,9 +401,11 @@ var LibraryGLFW = {
       // This logic comes directly from the sdl implementation. We cannot
       // call preventDefault on all keydown events otherwise onKeyPress will
       // not get called
-      if (event.keyCode === 8 /* backspace */ || event.keyCode === 9 /* tab */) {
-        event.preventDefault();
-      }
+
+      // NDShinoAndDado: Commenting out these lines as they make no sense at all
+      // if (event.keyCode === 8 /* backspace */ || event.keyCode === 9 /* tab */) {
+      //   event.preventDefault();
+      // }
     },
 
     onKeyup: function(event) {
@@ -988,7 +990,7 @@ var LibraryGLFW = {
       if (monitor) {
         GLFW.requestFullscreen();
       } else {
-        Browser.setCanvasSize(width, height);
+        //Browser.setCanvasSize(width, height);
       }
 
       // Create context when there are no existing alive windows
