@@ -170,7 +170,7 @@ typedef void (*em_async_wget2_onstatus_func)(unsigned, void*, int);
 int emscripten_async_wget2(const char* url, const char* file,  const char* requesttype, const char* param, void *arg, em_async_wget2_onload_func onload, em_async_wget2_onstatus_func onerror, em_async_wget2_onstatus_func onprogress);
 
 typedef void (*em_async_wget2_data_onload_func)(unsigned, void*, void*, unsigned);
-typedef void (*em_async_wget2_data_onload_withstatus_func)(unsigned, void*, int, const char*, void*, unsigned);
+typedef void (*em_async_wget2_data_onload_withstatus_func)(unsigned, void*, int, const char*, const char*, void*, unsigned);
 typedef void (*em_async_wget2_data_onerror_func)(unsigned, void*, int, const char*);
 typedef void (*em_async_wget2_data_onprogress_func)(unsigned, void*, int, int);
 

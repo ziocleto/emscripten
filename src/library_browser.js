@@ -992,6 +992,7 @@ var LibraryBrowser = {
         var byteArray = new Uint8Array(http.response);
         var buffer = _malloc(byteArray.length);
         HEAPU8.set(byteArray, buffer);
+
         var etag = http.getResponseHeader("ETag");
         if (etag == null ) {
           etag = http.responseURL + byteArray.length.toString();
@@ -1000,7 +1001,16 @@ var LibraryBrowser = {
         var cname = _malloc(lengthAsUTF8+1);
         stringToUTF8(etag, cname, lengthAsUTF8+1);
 
-        if (onload) Module['dynCall_viiiiii'](onload, handle, arg, http.status, cname, buffer, byteArray.length);
+        var contentType = http.getResponseHeader("Content-Type");
+        var ccontentType = null;
+
+        if (contentType != null ) {
+          var lengthAsUTF8 = lengthBytesUTF8(contentType);
+          ccontentType = _malloc(lengthAsUTF8+1);
+          stringToUTF8(contentType, ccontentType, lengthAsUTF8+1);
+        }
+
+        if (onload) Module['dynCall_viiiiiii'](onload, handle, arg, http.status, cname, ccontentType, buffer, byteArray.length);
         if (free) _free(buffer);
       } else {
         var lengthAsUTF8 = lengthBytesUTF8(http.statusText);
