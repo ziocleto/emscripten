@@ -1657,7 +1657,7 @@ var LibraryBrowser = {
         }
       };
       Browser.socket.onmessage = function (event) {
-        console.log("[WEB-SOCKET] Message received: " + event.data); 
+        // console.log("[WEB-SOCKET] Message received: " + event.data); 
           if (onmessage) {
             var stack = stackSave();
             Module['dynCall_vi'](onmessage, allocate(intArrayFromString(event.data), 'i8', ALLOC_STACK));
