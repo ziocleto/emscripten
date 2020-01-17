@@ -1627,7 +1627,7 @@ var LibraryBrowser = {
   emscripten_ws_send: function(message) {
     var msg = Pointer_stringify(message);
     if ( Browser.socket.readyState === WebSocket.OPEN ) {
-      console.log("[WEB-SOCKET] message: ", msg);
+      //console.log("[WEB-SOCKET] message: ", msg);
       Browser.socket.send(msg);      
     } else {
       console.log("[WEB-SOCKET] message not ready yet: ", msg);      
